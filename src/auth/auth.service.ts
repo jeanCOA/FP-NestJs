@@ -13,18 +13,16 @@ export class AuthService {
     private readonly hashService: HashService,
   ) {}
 
-  async logIn(logInDto: LogInDto): Promise<Tokens> {
+  public async logIn(logInDto: LogInDto): Promise<Tokens> {
     const { email, password } = logInDto;
     const user = await this.userService.findOneByEmail(email);
 
-    if (!user || !(await this.hashService.compare(password, user.password))) {
-      throw new BadRequestException('Invalid email or password');
-    }
+    this.validateUserAndPassword(user, password);
 
     return this.getTokens({ sub: user.id });
   }
 
-  async register(userRegister: SignUpDto): Promise<Tokens> {
+  public async register(userRegister: SignUpDto): Promise<Tokens> {
     const { email, password, username, role } = userRegister;
 
     await this.validateEmailForSignUp(email);
@@ -46,11 +44,18 @@ export class AuthService {
     return { access_token: accessToken };
   }
 
-  private async validateEmailForSignUp(email: string): Promise<void> {
+  private async validateUserAndPassword(user: any, password: Partial<LogInDto>): Promise<void> {
+    if (!user || !(await this.hashService.compare(password, user.password))) {
+      throw new BadRequestException('Invalid email or password');
+    }
+  }
+
+  private async validateEmailForSignUp(email: Partial<SignUpDto>): Promise<void> {
     const user = await this.userService.findOneByEmailRegister(email);
 
     if (user) {
       throw new BadRequestException('Email already exists');
     }
   }
+
 }
