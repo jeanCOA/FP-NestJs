@@ -6,7 +6,7 @@
    - Verifica si el usuario existe y si la contraseña proporcionada coincide con la contraseña almacenada.
    - Genera un token de acceso si la autenticación es exitosa.
 
-2. **Método `register`**:
+2. **Método `signUp`**:
    - Registra a un nuevo usuario en el sistema.
    - Verifica si el correo electrónico proporcionado ya está registrado.
    - Encripta la contraseña proporcionada y crea un nuevo usuario en la base de datos.
@@ -40,13 +40,18 @@ La implementación sigue buenas prácticas de seguridad al utilizar servicios es
 ## Explicación de la Optimización del Código Interno
 
 1. **Consolidación de Lógica en el Método `logIn`**:
-   - Consolidé la verificación del usuario y la contraseña en una sola condición para simplificar el código y hacerlo más legible.
+   - Se consolidó la verificación del usuario y la contraseña en una sola condición dentro del método `logIn`. Esto simplifica el código y lo hace más legible al evitar la repetición de lógica.
 
-2. **Simplificación de la Creación del Usuario en `register`**:
-   - En el método `register`, simplifiqué la creación del usuario utilizando destructuración de objetos para obtener directamente los campos `email`, `password`, `username` y `role`.
+2. **Simplificación de la Creación del Usuario en `signUp`**:
+   - En el método `signUp`, se simplificó la creación del usuario utilizando la destructuración de objetos para obtener directamente los campos `email`, `password`, `username` y `role` del objeto `userSignUp`. Esto reduce la cantidad de código y mejora la legibilidad.
 
-3. **Uso de Métodos Privados**:
-   - Moví los métodos `getTokens` y `validateEmailForSignUp` a métodos privados dentro de la clase `AuthService` para mantener la cohesión y hacer el código más modular.
+3. **Optimización de la Funcionalidad de Log Out**:
+   - Esta optimización mejora la seguridad y la experiencia del usuario al proporcionar una forma controlada y segura de cerrar la sesión.
 
-4. **Manejo de Excepciones Consistente**:
-   - Utilicé la misma excepción `BadRequestException` para errores relacionados con la solicitud incorrecta en ambos métodos `logIn` y `validateEmailForSignUp` para consistencia y claridad en el manejo de errores.
+4. **Uso de Métodos Privados**:
+   - Se movieron los métodos `getTokens` y `validateEmailForSignUp` a métodos privados dentro de la clase `AuthService`. Esto mejora la modularidad del código y sigue el principio de encapsulamiento, ya que estos métodos no necesitan ser accedidos desde fuera de la clase.
+
+5. **Manejo de Excepciones Consistente**:
+   - Se utilizó la misma excepción `BadRequestException` para errores relacionados con la solicitud incorrecta tanto en el método `logIn` como en el método `validateEmailForSignUp`. Esto proporciona consistencia en el manejo de errores y facilita la comprensión del código.
+
+Estas optimizaciones mejoran la legibilidad, la mantenibilidad y la eficiencia del código, siguiendo buenas prácticas de programación y diseño.
